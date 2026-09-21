@@ -1,0 +1,955 @@
+:root {
+  --ivory: #f7f2e8;
+  --ink: #17313a;
+  --page-progress: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  overflow-x: hidden;
+  color: var(--ivory);
+  background: #809da5 url("./assets/amalfi-warm-town.jpg") center / cover fixed;
+  font-family: "DM Sans", sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+.film {
+  position: fixed;
+  z-index: -2;
+  inset: 0;
+  overflow: hidden;
+  background: #809da5 url("./assets/amalfi-warm-town.jpg") center / cover;
+}
+
+.film__video,
+.film__scene {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: center;
+}
+
+.film__video {
+  background: #809da5 url("./assets/poster.jpg") center / cover;
+}
+
+.film__scene {
+  opacity: 0;
+  transform: scale(1.03);
+  will-change: opacity, transform;
+}
+
+.film__scene--flowers {
+  object-position: 56% 60%;
+}
+
+.film__scene--terrace {
+  object-position: 62% center;
+}
+
+.film__scene--arch {
+  object-position: center 48%;
+}
+
+.film__scene--golden,
+.film__scene--twilight {
+  object-position: center 56%;
+}
+
+.film__wash,
+.film__grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.film__wash {
+  background:
+    linear-gradient(180deg, rgba(6, 28, 35, 0.22) 0%, transparent 30%, transparent 62%, rgba(7, 31, 37, 0.36) 100%),
+    linear-gradient(90deg, rgba(13, 42, 49, 0.12), transparent 42%, rgba(255, 235, 198, 0.05));
+}
+
+.film__grain {
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+
+.masthead {
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: max(24px, env(safe-area-inset-top)) clamp(24px, 4vw, 64px) 0;
+  font-size: 0.67rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 14px rgba(4, 26, 31, 0.35);
+}
+
+.masthead p {
+  margin: 0;
+}
+
+.monogram {
+  text-decoration: none;
+}
+
+.monogram span {
+  margin: 0 0.2rem;
+  font-family: "Italiana", serif;
+  font-size: 0.95rem;
+}
+
+.journey {
+  position: relative;
+  height: 800svh;
+}
+
+.chapter {
+  position: fixed;
+  z-index: 2;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(72px, 9vw, 120px) clamp(24px, 7vw, 112px);
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 24px, 0);
+  will-change: opacity, transform;
+}
+
+.chapter.is-visible {
+  visibility: visible;
+}
+
+.eyebrow,
+.occasion,
+.editorial-copy small,
+.schedule span,
+.scroll-cue,
+.closing-copy > p:last-of-type {
+  font-size: clamp(0.58rem, 0.72vw, 0.72rem);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.opening-copy,
+.closing-copy {
+  text-align: center;
+  text-shadow: 0 2px 30px rgba(3, 27, 34, 0.38);
+}
+
+.opening-copy .eyebrow {
+  margin: 0 0 clamp(22px, 4vh, 42px);
+}
+
+h1 {
+  margin: 0;
+  font-family: "Italiana", Georgia, serif;
+  font-size: clamp(4rem, 10.5vw, 10rem);
+  font-weight: 400;
+  line-height: 0.75;
+  letter-spacing: 0;
+}
+
+h1 span {
+  display: block;
+}
+
+h1 i {
+  display: block;
+  margin: 0.16em 0 0.11em;
+  font-size: 0.34em;
+  font-weight: 400;
+}
+
+.occasion {
+  margin: clamp(28px, 5vh, 52px) 0 0;
+}
+
+.chapter--air {
+  place-items: center start;
+}
+
+.editorial-copy p,
+.chapter-copy {
+  margin: 0;
+  font-family: "Italiana", Georgia, serif;
+  font-size: clamp(3rem, 7vw, 7.5rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0;
+  text-shadow: 0 2px 32px rgba(4, 27, 33, 0.45);
+}
+
+.editorial-copy small {
+  display: block;
+  margin-top: 30px;
+}
+
+.editorial-copy small span {
+  padding: 0 0.45rem;
+}
+
+.chapter--chapter {
+  place-items: center end;
+  text-align: right;
+}
+
+.chapter-copy em,
+.closing-copy em {
+  font-weight: 400;
+}
+
+.details-card {
+  width: min(92vw, 560px);
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  padding: clamp(32px, 5vw, 58px);
+  color: var(--ink);
+  background: rgba(248, 244, 233, 0.92);
+  box-shadow: 0 30px 80px rgba(13, 42, 48, 0.22);
+  text-align: center;
+  backdrop-filter: blur(28px) saturate(0.78);
+  -webkit-backdrop-filter: blur(28px) saturate(0.78);
+}
+
+.details-card .eyebrow {
+  margin: 0 0 22px;
+}
+
+.details-card h2,
+.closing-copy h2 {
+  margin: 0;
+  font-family: "Italiana", Georgia, serif;
+  font-size: clamp(2.7rem, 5vw, 4.8rem);
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: 0;
+}
+
+.invitation-copy {
+  margin: 26px 0 30px;
+  font-family: "Italiana", Georgia, serif;
+  font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+  line-height: 1.45;
+}
+
+.schedule {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(23, 49, 58, 0.2);
+  padding-top: 24px;
+}
+
+.schedule p {
+  margin: 0;
+  padding: 0 12px;
+}
+
+.schedule p + p {
+  border-left: 1px solid rgba(23, 49, 58, 0.2);
+}
+
+.schedule span,
+.schedule strong {
+  display: block;
+}
+
+.schedule span {
+  margin-bottom: 8px;
+  font-size: 0.55rem;
+}
+
+.schedule strong {
+  font-family: "Italiana", Georgia, serif;
+  font-size: clamp(0.85rem, 1.5vw, 1.05rem);
+  font-weight: 400;
+}
+
+.closing-copy .eyebrow {
+  margin: 0 0 26px;
+}
+
+.closing-copy h2 {
+  font-size: clamp(3.5rem, 8vw, 8rem);
+}
+
+.closing-copy > p:last-of-type {
+  margin: 30px 0 0;
+}
+
+.rsvp {
+  display: inline-grid;
+  min-width: 140px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid rgba(247, 242, 232, 0.64);
+  margin-top: 34px;
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 180ms ease, background 180ms ease;
+  pointer-events: auto;
+}
+
+.rsvp:hover,
+.rsvp:focus-visible {
+  color: var(--ink);
+  background: var(--ivory);
+  outline: none;
+}
+
+.scroll-cue {
+  position: fixed;
+  z-index: 15;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  left: 50%;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  opacity: calc(1 - min(1, var(--page-progress) * 15));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.scroll-cue i {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: 34px;
+  overflow: hidden;
+  background: rgba(247, 242, 232, 0.35);
+}
+
+.scroll-cue i::after {
+  position: absolute;
+  inset: 0;
+  background: var(--ivory);
+  content: "";
+  animation: descend 1.8s ease-in-out infinite;
+  transform: translateY(-100%);
+}
+
+.loading {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  color: var(--ink);
+  background: #d7e0dd url("./assets/amalfi-warm-town.jpg") center / cover;
+  transition: visibility 600ms ease, opacity 600ms ease;
+}
+
+.loading::before {
+  position: absolute;
+  inset: 0;
+  background: rgba(240, 238, 226, 0.52);
+  content: "";
+  backdrop-filter: blur(8px);
+}
+
+.loading span,
+.loading p {
+  position: relative;
+}
+
+.loading span {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(23, 49, 58, 0.3);
+  border-top-color: var(--ink);
+  border-radius: 50%;
+  animation: spin 900ms linear infinite;
+}
+
+.loading p {
+  margin: 0;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.loading.is-ready {
+  visibility: hidden;
+  opacity: 0;
+}
+
+noscript {
+  position: fixed;
+  z-index: 60;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 16px;
+  color: var(--ink);
+  background: var(--ivory);
+  text-align: center;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes descend {
+  0% { transform: translateY(-100%); }
+  45%, 100% { transform: translateY(100%); }
+}
+
+@media (max-width: 680px) {
+  .film__video {
+    object-position: center;
+  }
+
+  .masthead {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .chapter {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  h1 {
+    font-size: clamp(3.8rem, 20vw, 6.2rem);
+  }
+
+  .chapter--air {
+    place-items: end start;
+    padding-bottom: 18vh;
+  }
+
+  .chapter--chapter {
+    place-items: start end;
+    padding-top: 24vh;
+  }
+
+  .editorial-copy p,
+  .chapter-copy {
+    font-size: clamp(2.8rem, 13.5vw, 4.5rem);
+  }
+
+  .details-card {
+    padding: 32px 24px;
+  }
+
+  .schedule {
+    gap: 18px;
+    grid-template-columns: 1fr;
+  }
+
+  .schedule p + p {
+    border-top: 1px solid rgba(23, 49, 58, 0.16);
+    border-left: 0;
+    padding-top: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue i::after,
+  .loading span {
+    animation: none;
+  }
+}
+
+/* Editorial narrative treatment based on the supplied cinematic reference. */
+.film__opening-wash {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: rgba(224, 237, 239, 0.8);
+  opacity: calc(1 - min(1, var(--page-progress) * 7));
+  pointer-events: none;
+}
+
+.film__wash {
+  z-index: 2;
+  background:
+    linear-gradient(180deg, rgba(6, 28, 35, 0.1) 0%, transparent 34%, transparent 52%, rgba(7, 23, 27, 0.62) 100%),
+    linear-gradient(90deg, rgba(13, 42, 49, 0.08), transparent 44%, rgba(255, 235, 198, 0.05));
+}
+
+.film__grain {
+  z-index: 3;
+}
+
+.masthead {
+  mix-blend-mode: difference;
+}
+
+.opening-copy {
+  color: var(--ink);
+  text-shadow: none;
+}
+
+.opening-copy .eyebrow {
+  margin-bottom: clamp(18px, 3vh, 28px);
+}
+
+h1 {
+  font-size: clamp(3.6rem, 8vw, 7.8rem);
+  line-height: 0.84;
+}
+
+.opening-note {
+  margin: 26px 0 0;
+  font-family: "Italiana", Georgia, serif;
+  font-size: clamp(0.92rem, 1.5vw, 1.12rem);
+  line-height: 1.45;
+}
+
+.occasion {
+  margin-top: 20px;
+}
+
+.occasion span,
+.chapter-note span {
+  padding: 0 0.42rem;
+}
+
+.chapter--air,
+.chapter--chapter {
+  place-items: end center;
+  padding-bottom: 11vh;
+  text-align: center;
+}
+
+.editorial-copy p {
+  font-size: clamp(2.9rem, 5.8vw, 6rem);
+}
+
+.editorial-copy small {
+  margin: 0 0 18px;
+}
+
+.editorial-copy em,
+.details-card em,
+.closing-copy em {
+  font-weight: 400;
+}
+
+.chapter-note {
+  display: block;
+  margin-top: 20px;
+  font-family: "Italiana", Georgia, serif;
+  font-size: clamp(0.84rem, 1.3vw, 1rem);
+  line-height: 1.45;
+}
+
+.details-card {
+  width: min(92vw, 680px);
+  border: 0;
+  padding: 24px;
+  color: var(--ivory);
+  background: transparent;
+  box-shadow: none;
+  text-shadow: 0 2px 24px rgba(4, 23, 27, 0.74);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.details-card h2,
+.closing-copy h2 {
+  font-size: clamp(3rem, 5.8vw, 5.8rem);
+}
+
+.invitation-copy {
+  margin: 22px 0 28px;
+}
+
+.schedule {
+  border-top-color: rgba(247, 242, 232, 0.38);
+}
+
+.schedule p + p {
+  border-left-color: rgba(247, 242, 232, 0.38);
+}
+
+.closing-copy > p:last-of-type {
+  margin-top: 24px;
+  font-family: "Italiana", Georgia, serif;
+  font-size: clamp(0.92rem, 1.5vw, 1.08rem);
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.rsvp {
+  min-width: 220px;
+  height: 54px;
+  border: 0;
+  color: var(--ink);
+  background: rgba(247, 242, 232, 0.94);
+  font-family: "DM Sans", sans-serif;
+  cursor: pointer;
+}
+
+.rsvp-dialog {
+  width: min(92vw, 560px);
+  max-height: min(90vh, 760px);
+  border: 0;
+  padding: 0;
+  color: var(--ink);
+  background: var(--ivory);
+  box-shadow: 0 28px 90px rgba(3, 18, 22, 0.42);
+}
+
+.rsvp-dialog::backdrop {
+  background: rgba(4, 22, 27, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+.rsvp-form {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  padding: clamp(30px, 6vw, 54px);
+}
+
+.rsvp-form h2 {
+  margin: 0 0 4px;
+  font-family: "Italiana", Georgia, serif;
+  font-size: clamp(2.8rem, 7vw, 4.4rem);
+  font-weight: 400;
+  line-height: 0.96;
+}
+
+.rsvp-form .eyebrow,
+.form-note {
+  margin: 0;
+}
+
+.form-note,
+.rsvp-form label {
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.rsvp-form label {
+  display: grid;
+  gap: 7px;
+  font-weight: 500;
+}
+
+.rsvp-form input,
+.rsvp-form select,
+.rsvp-form textarea {
+  width: 100%;
+  border: 1px solid rgba(23, 49, 58, 0.18);
+  border-radius: 0;
+  padding: 13px 14px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.48);
+  font: 400 0.88rem "DM Sans", sans-serif;
+}
+
+.rsvp-form textarea {
+  resize: vertical;
+}
+
+.dialog-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  border: 0;
+  padding: 4px;
+  color: var(--ink);
+  background: transparent;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.form-submit {
+  min-height: 52px;
+  border: 0;
+  margin-top: 4px;
+  color: var(--ink);
+  background: #e8dcc6;
+  font: 500 0.66rem "DM Sans", sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+@media (max-width: 680px) {
+  h1 {
+    font-size: clamp(3.4rem, 17vw, 5.3rem);
+  }
+
+  .chapter--air,
+  .chapter--chapter {
+    place-items: end center;
+    padding-top: 72px;
+    padding-bottom: 11vh;
+  }
+
+  .editorial-copy p {
+    font-size: clamp(2.6rem, 12vw, 4rem);
+  }
+
+  .details-card {
+    padding: 24px 0;
+  }
+
+  .schedule p + p {
+    border-top-color: rgba(247, 242, 232, 0.28);
+  }
+
+  .rsvp-form {
+    padding: 34px 24px 26px;
+  }
+}
+
+/* Restrained product-story treatment. */
+:root {
+  --ivory: #f5f5f7;
+  --ink: #1d1d1f;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+}
+
+.film__video,
+.film__scene {
+  filter: saturate(0.82) contrast(0.96) brightness(0.96) sepia(0.06);
+}
+
+.film__opening-wash {
+  background: rgba(245, 245, 247, 0.72);
+}
+
+.film__wash {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 45%, rgba(0, 0, 0, 0.38));
+}
+
+.film__grain {
+  display: none;
+}
+
+.masthead {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.monogram span {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.opening-copy {
+  width: min(90vw, 980px);
+}
+
+.eyebrow,
+.occasion,
+.editorial-copy small,
+.schedule span,
+.scroll-cue,
+.closing-copy > p:last-of-type {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+h1,
+.editorial-copy p,
+.details-card h2,
+.closing-copy h2,
+.opening-note,
+.invitation-copy,
+.chapter-note {
+  font-family: inherit;
+  letter-spacing: 0;
+}
+
+h1 {
+  max-width: 980px;
+  margin-inline: auto;
+  font-size: 5rem;
+  font-weight: 600;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+h1 i,
+.editorial-copy em,
+.details-card em,
+.closing-copy em {
+  display: inline;
+  margin: 0;
+  font-size: inherit;
+  font-style: normal;
+  font-weight: inherit;
+}
+
+.opening-note {
+  margin-top: 24px;
+  font-size: 1.15rem;
+  font-weight: 400;
+}
+
+.chapter--air,
+.chapter--chapter {
+  place-items: center;
+  padding-bottom: 0;
+}
+
+.editorial-copy {
+  max-width: 980px;
+  text-align: center;
+}
+
+.editorial-copy small {
+  margin-bottom: 20px;
+}
+
+.editorial-copy p {
+  font-size: 4rem;
+  font-weight: 600;
+  line-height: 1.04;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.32);
+}
+
+.details-card {
+  width: min(88vw, 860px);
+  padding: 0;
+}
+
+.details-card h2,
+.closing-copy h2 {
+  font-size: 4rem;
+  font-weight: 600;
+  line-height: 1.04;
+}
+
+.invitation-copy {
+  margin: 18px 0 34px;
+  font-size: 1.1rem;
+}
+
+.schedule {
+  max-width: 680px;
+  margin-inline: auto;
+}
+
+.schedule strong {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.closing-copy > p:last-of-type {
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.rsvp {
+  min-width: 112px;
+  height: 46px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 680px) {
+  .film__video {
+    object-position: 52% center;
+  }
+
+  .film__scene:nth-of-type(1) {
+    object-position: 58% center;
+  }
+
+  .film__scene:nth-of-type(2) {
+    object-position: 54% center;
+  }
+
+  .film__scene--flowers {
+    object-position: 62% center;
+  }
+
+  .film__scene--terrace {
+    object-position: 67% center;
+  }
+
+  .film__scene--arch {
+    object-position: 52% center;
+  }
+
+  .film__scene--golden,
+  .film__scene--twilight {
+    object-position: 55% center;
+  }
+}
+
+.rsvp-dialog {
+  border-radius: 8px;
+}
+
+.rsvp-form h2 {
+  font-family: inherit;
+  font-weight: 600;
+}
+
+@media (max-width: 680px) {
+  h1 {
+    font-size: 3.25rem;
+  }
+
+  .opening-note {
+    font-size: 1rem;
+  }
+
+  .chapter--air,
+  .chapter--chapter {
+    place-items: center;
+    padding: 72px 24px;
+  }
+
+  .editorial-copy p,
+  .details-card h2,
+  .closing-copy h2 {
+    font-size: 2.8rem;
+  }
+
+  .details-card {
+    width: 100%;
+  }
+}
