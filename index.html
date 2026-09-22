@@ -1195,6 +1195,14 @@ footer:after{right:8%;transform:scaleX(-1);}
 
 /* Decorative flowers removed for a cleaner continuous invitation. */
 .invitation-flower,.art-floral-crop,.section-botanical,.hero-botanical{display:none!important;}
+
+
+/* Final visual alignment: Festive Indian Attire uses the same paper tone as the surrounding page. */
+.attire-section{background:var(--paper)!important;background-image:none!important;}
+.attire-section:after{background:var(--paper)!important;}
+
+/* SEE YOU SOON — matched to the mood-board image background */
+#count{background-color:#F4F0E9!important}
 </style>
 </head>
 <body>
@@ -1381,11 +1389,106 @@ function tick(){
 }
 tick();setInterval(tick,1000);
 
-document.getElementById('rsvpForm').addEventListener('submit',e=>{
+// Google Sheets RSVP integration
+// After deploying the Google Apps Script web app, paste its /exec URL below.
+const RSVP_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxAlKyqNXZq9poeJJukbcIc_lXSgJgRFs5MikorATReFVCKPnxz7_uxMCionCSMDRX3ng/exec';
+
+const rsvpForm=document.getElementById('rsvpForm');
+const rsvpButton=rsvpForm.querySelector('button.submit');
+const successMessage=document.getElementById('success');
+
+// Normalize names so "Ramitha", "RAMITHA", and "  ramitha  "
+// are treated as the same RSVP name. The Apps Script enforces this globally.
+function normalizeRsvpName(name){
+ return String(name || '')
+   .normalize('NFKC')
+   .trim()
+   .replace(/\s+/g,' ')
+   .toLowerCase();
+}
+
+function getLocalSubmittedNames(){
+ try{
+   return JSON.parse(localStorage.getItem('rsvpSubmittedNames') || '[]');
+ }catch(_){
+   return [];
+ }
+}
+
+function rememberLocalSubmittedName(name){
+ try{
+   const names=new Set(getLocalSubmittedNames());
+   names.add(normalizeRsvpName(name));
+   localStorage.setItem('rsvpSubmittedNames',JSON.stringify([...names]));
+ }catch(_){}
+}
+
+rsvpForm.addEventListener('submit',async e=>{
  e.preventDefault();
- document.getElementById('success').style.display='block';
- e.target.reset();
+
+ if(!RSVP_ENDPOINT || RSVP_ENDPOINT.includes('PASTE_YOUR_GOOGLE_APPS_SCRIPT')){
+   successMessage.textContent='RSVP is not connected yet. Please add the Google Apps Script URL.';
+   successMessage.style.display='block';
+   successMessage.style.color='#702536';
+   return;
+ }
+
+ const name=rsvpForm.elements.name.value.trim();
+ const normalizedName=normalizeRsvpName(name);
+ const locallySubmitted=getLocalSubmittedNames();
+
+ // Fast client-side guard for repeat submissions from the same browser.
+ if(locallySubmitted.includes(normalizedName)){
+   successMessage.textContent='An RSVP with this name has already been submitted.';
+   successMessage.style.display='block';
+   successMessage.style.color='#702536';
+   return;
+ }
+
+ rsvpButton.disabled=true;
+ rsvpButton.textContent='SUBMITTING…';
+ successMessage.style.display='none';
+
+ const data=new URLSearchParams();
+ data.set('name',name);
+ data.set('attendance',rsvpForm.elements.attendance.value);
+ data.set('guests',rsvpForm.elements.guests.value);
+ data.set('message',rsvpForm.elements.message.value.trim());
+
+ try{
+   await fetch(RSVP_ENDPOINT,{
+     method:'POST',
+     mode:'no-cors',
+     headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+     body:data.toString()
+   });
+
+   // The Apps Script also checks the entire sheet case-insensitively,
+   // so duplicate names are blocked even from different devices.
+   rememberLocalSubmittedName(name);
+   successMessage.textContent="Thank you! We can't wait to celebrate with you.";
+   successMessage.style.display='block';
+   rsvpForm.reset();
+ }catch(err){
+   successMessage.textContent='Something went wrong. Please try again.';
+   successMessage.style.display='block';
+ }finally{
+   rsvpButton.disabled=false;
+   rsvpButton.textContent='SUBMIT RSVP';
+ }
 });
 </script>
 </body>
-</html>
+</html><style>
+/* Wine treatment for countdown + attire */
+#count{background:#702536!important;color:#fffaf0!important;}
+#count h2,#count p,#count .eyebrow,#count .num,#count .unit-label{color:#fffaf0!important;}
+#count .countdown{border-color:rgba(255,250,240,.42)!important;}
+#count .unit+.unit:before{background:rgba(255,250,240,.42)!important;}
+
+.attire-section{background:#702536!important;background-image:none!important;color:#fffaf0!important;}
+.attire-section h2,.attire-section p,.attire-section .eyebrow,.attire-section .attire-note,.attire-section .attire-symbol{color:#fffaf0!important;}
+.attire-section .attire-line{background:linear-gradient(90deg,transparent,rgba(255,250,240,.7))!important;}
+.attire-section .attire-line:last-child{background:linear-gradient(90deg,rgba(255,250,240,.7),transparent)!important;}
+.attire-section:after{background:#702536!important;}
+</style>
