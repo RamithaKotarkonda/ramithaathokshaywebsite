@@ -1556,9 +1556,11 @@ html,body{margin:0!important;padding:0!important;}
    <section class="rsvp" id="rsvp">
     <div style="color:#b58b48;font-size:21px;letter-spacing:8px">✦ ❈ ✦</div>
     <h2>Kindly RSVP</h2>
-    <p style="text-align:center;">We'd love to celebrate this special day with you.</p>
+    <p style="text-align:center;">We'd love to celebrate this special day with you. Already RSVP’d? Submit again using the same phone number or email to update your response.</p>
     <form id="rsvpForm">
      <label>Name *</label><input name="name" required placeholder="Your full name">
+     <label for="rsvpPhone">Phone number *</label><input id="rsvpPhone" name="phone" type="tel" autocomplete="tel" required placeholder="Your phone number">
+     <label for="rsvpEmail">Email address *</label><input id="rsvpEmail" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
      <label>Will you attend? *</label>
      <select name="attendance" required>
       <option value="">Select one</option>
@@ -1568,8 +1570,8 @@ html,body{margin:0!important;padding:0!important;}
      </select>
      <label>Number of guests *</label>
      <select name="guests" required><option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option></select>
-     <button class="submit" type="submit">SUBMIT RSVP</button>
-     <div class="success" id="success">Thank you! We can't wait to celebrate with you.</div>
+     <button class="submit" type="submit">SUBMIT RESPONSE</button>
+     <div class="success" id="success">Thank you for your response. We are looking forward to celebrating with you!</div>
     </form>
    </section>
    <footer>WITH LOVE, ATHOKSHAY & RAMITHA</footer>
@@ -1652,32 +1654,6 @@ const rsvpForm=document.getElementById('rsvpForm');
 const rsvpButton=rsvpForm.querySelector('button.submit');
 const successMessage=document.getElementById('success');
 
-// Normalize names so "Ramitha", "RAMITHA", and "  ramitha  "
-// are treated as the same RSVP name. The Apps Script enforces this globally.
-function normalizeRsvpName(name){
- return String(name || '')
-   .normalize('NFKC')
-   .trim()
-   .replace(/\s+/g,' ')
-   .toLowerCase();
-}
-
-function getLocalSubmittedNames(){
- try{
-   return JSON.parse(localStorage.getItem('rsvpSubmittedNames') || '[]');
- }catch(_){
-   return [];
- }
-}
-
-function rememberLocalSubmittedName(name){
- try{
-   const names=new Set(getLocalSubmittedNames());
-   names.add(normalizeRsvpName(name));
-   localStorage.setItem('rsvpSubmittedNames',JSON.stringify([...names]));
- }catch(_){}
-}
-
 rsvpForm.addEventListener('submit',async e=>{
  e.preventDefault();
 
@@ -1689,16 +1665,6 @@ rsvpForm.addEventListener('submit',async e=>{
  }
 
  const name=rsvpForm.elements.name.value.trim();
- const normalizedName=normalizeRsvpName(name);
- const locallySubmitted=getLocalSubmittedNames();
-
- // Fast client-side guard for repeat submissions from the same browser.
- if(locallySubmitted.includes(normalizedName)){
-   successMessage.textContent='An RSVP with this name has already been submitted.';
-   successMessage.style.display='block';
-   successMessage.style.color='#702536';
-   return;
- }
 
  rsvpButton.disabled=true;
  rsvpButton.textContent='SUBMITTING…';
@@ -1706,6 +1672,8 @@ rsvpForm.addEventListener('submit',async e=>{
 
  const data=new URLSearchParams();
  data.set('name',name);
+ data.set('phone',rsvpForm.elements.phone.value.trim());
+ data.set('email',rsvpForm.elements.email.value.trim());
  data.set('attendance',rsvpForm.elements.attendance.value);
  data.set('guests',rsvpForm.elements.guests.value);
 
@@ -1717,10 +1685,8 @@ rsvpForm.addEventListener('submit',async e=>{
      body:data.toString()
    });
 
-   // The Apps Script also checks the entire sheet case-insensitively,
-   // so duplicate names are blocked even from different devices.
-   rememberLocalSubmittedName(name);
-   successMessage.textContent="Thank you! We can't wait to celebrate with you.";
+   // no-cors cannot read the Apps Script result. Check the sheet to verify success.
+   successMessage.textContent="Thank you for your response. We are looking forward to celebrating with you!";
    successMessage.style.display='block';
    rsvpForm.reset();
  }catch(err){
@@ -1728,7 +1694,7 @@ rsvpForm.addEventListener('submit',async e=>{
    successMessage.style.display='block';
  }finally{
    rsvpButton.disabled=false;
-   rsvpButton.textContent='SUBMIT RSVP';
+   rsvpButton.textContent='SUBMIT RESPONSE';
  }
 });
 </script>
