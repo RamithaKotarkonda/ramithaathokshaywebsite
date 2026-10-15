@@ -1206,6 +1206,20 @@ footer:after{right:8%;transform:scaleX(-1);}
 
 /* Fine-tune the wax seal slightly lower and a little to the right on the envelope. */
 .seal{top:calc(53% + 6px)!important;left:calc(50% + 8px)!important}
+
+/* Larger opening announcement — preserve all other invitation styling */
+html body .opening .opening-invite {
+  font-size: clamp(42px, 5.5vw, 72px) !important;
+  line-height: 1.06 !important;
+  max-width: 950px !important;
+}
+@media (max-width: 700px) {
+  html body .opening .opening-invite {
+    font-size: clamp(38px, 9vw, 52px) !important;
+    line-height: 1.08 !important;
+    max-width: 95% !important;
+  }
+}
 </style>
 
 <style>
@@ -1465,6 +1479,44 @@ html body .invite-card .attire-section .attire-symbol { color: #fffaf0 !importan
 html body .invite-card .attire-section .attire-line { background:linear-gradient(90deg,transparent,rgba(255,250,240,.7))!important; }
 html body .invite-card .attire-section .attire-line:last-child { background:linear-gradient(90deg,rgba(255,250,240,.7),transparent)!important; }
 </style>
+<style id="opening-script-match">
+/* Match the ornate calligraphic lettering of the invitation names. */
+html body .opening .opening-invite {
+  font-family: "Great Vibes", cursive !important;
+  font-size: clamp(76px, 9vw, 126px) !important;
+  font-weight: 400 !important;
+  line-height: 1.12 !important;
+  letter-spacing: 0 !important;
+  max-width: 1080px !important;
+  color: #d8b77c !important;
+  text-transform: none !important;
+}
+@media (max-width:700px) {
+  html body .opening .opening-invite {
+    font-size: clamp(51px, 12vw, 76px) !important;
+    max-width: 100% !important;
+    line-height: 1.15 !important;
+  }
+}
+</style>
+<style id="opening-title-size-final-fix">
+/* Final cascade override: previous desktop cover rule reduced the title to 36px. */
+html body .opening .opening-invite {
+  font-family: "Great Vibes", cursive !important;
+  font-size: clamp(86px, 10vw, 142px) !important;
+  line-height: 1.05 !important;
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  color: #d8b77c !important;
+}
+@media(max-width:700px) {
+  html body .opening .opening-invite {
+    font-size: clamp(66px, 14vw, 100px) !important;
+    max-width: 100% !important;
+    line-height: 1.08 !important;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -1704,6 +1756,25 @@ html body .opening .envelope img.wax-stamp{left:50%!important;right:auto!importa
 }
 </style>
 
+
+<style id="actual-final-opening-title-override">
+/* Must follow the desktop-cover-balance-final style near the bottom of the document. */
+html body .opening .opening-invite {
+  font-family: "Great Vibes", cursive !important;
+  font-size: clamp(100px, 11vw, 160px) !important;
+  line-height: 1.04 !important;
+  max-width: 1100px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  color: #b58b48 !important;
+}
+@media (max-width:700px) {
+  html body .opening .opening-invite {
+    font-size: clamp(68px, 15vw, 105px) !important;
+    line-height: 1.08 !important;
+  }
+}
+</style>
 </body>
 </html><style>
 /* Wine treatment for countdown + attire */
@@ -1852,5 +1923,23 @@ html body .opening .envelope img.wax-stamp{left:50%!important;right:auto!importa
   html body .opening .envelope img.wax-stamp {
     left: 53.4% !important;
   }
+}
+</style>
+
+<style id="opening-title-size-final-fix">
+/* Final override placed after all legacy cover rules. */
+html body section.opening .opening-inner p.opening-invite {
+ font-family: "Great Vibes", cursive !important;
+ font-size: clamp(48px, 5vw, 70px) !important;
+ line-height: 1.06 !important;
+ max-width: min(88vw, 1000px) !important;
+ width: 100% !important;
+ margin: 0 auto !important;
+ text-align: center !important;
+ color: #b58b48 !important;
+}
+html body section.opening .opening-inner { width: min(94vw, 1100px) !important; }
+@media(max-width:700px) {
+ html body section.opening .opening-inner p.opening-invite { font-size: clamp(38px, 8vw, 52px) !important; line-height: 1.08 !important; }
 }
 </style>
